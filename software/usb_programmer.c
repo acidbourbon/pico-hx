@@ -19,7 +19,10 @@ enum phx_ctrl_req {
 
 // Preload bitstream for simplicity
 // Could alternatively stream it assuming no interruptions
-static uint8_t bitstream[0x8000];
+
+//static uint8_t bitstream[0x8000]; // buffer is big enough to write ice40hx1k
+static uint8_t bitstream[196608]; // increased buffer size to write the bitstream for ice40hx4k 
+
 static size_t bitstream_index;
 
 void usb_prog_task() {
