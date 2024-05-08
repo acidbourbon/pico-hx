@@ -62,16 +62,37 @@ make prog
 ### Building Pico software
 
 It's assumed that the [pico-sdk](https://github.com/raspberrypi/pico-sdk) is installed and the required environment variables are set.
+Since there's continuous development on pico-sdk, it's not guaranteed this version of the pico software will compile with the newest version of the sdk.
+For now we will work with pico-sdk version 1.1.2. Be sure to also checkout pico-sdk's submodules in the state as of v1.1.2:
+
+```
+# get the pico-sdk sources, save in a path of your liking
+git clone https://github.com/raspberrypi/pico-sdk
+
+cd pico-sdk
+git checkout afc10f3 # version 1.1.2
+git submodule init
+git submodule update
+```
+
+Now we can compile our software:
 
 ```
 cd software
 mkdir build
+# adapt the following path export to your system
+export PICO_SDK_PATH=/path/where/you/cloned/pico-sdk/
 cd build
 cmake ..
 make
 ```
 
-The software can then be flashed using `picotool` for example. Default behaviour of the software is to immediately flash the iCE40 with an included bitstream that runs a counter with output to the 8 user LEDs.
+The software can then be flashed using `picotool` for example.
+
+Alternatively you can use the built-in mass storage emulation for programming your pico.
+Hold down the BOOTSEL button on the pico while plugging in the USB cable. The pico will be mounted like a USB stick on your computer. After successful compilation, copy the software/build/picohx_demo.uf2 file onto the emulated drive. As soon as the file is copied, the pico will execute the new firmware. 
+
+Default behaviour of the software is to immediately flash the iCE40 with an included bitstream that runs a counter with output to the 8 user LEDs.
 
 ### Programming iCE40 bitstream
 
